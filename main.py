@@ -1,63 +1,58 @@
 import pygame
+from src.config import *
+from src.menu import Menu
+from src.cursor import CursorPersonalizado
+from src.terrinhas import TerrinhaGrid
+from src.cursor import CursorPersonalizado
 
 pygame.init()
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 800
-
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-clock = pygame.time.Clock()
 pygame.display.set_caption("Coleta Feliz")
-
-# Esconder o cursor padrão
+clock = pygame.time.Clock()
 pygame.mouse.set_visible(False)
 
-# Carregar imagem do cursor personalizado
-cursor_img = pygame.image.load("sprites/cursor.png").convert_alpha()
-cursor_img = pygame.transform.scale(cursor_img, (120, 120))
-cursor_img.set_colorkey((255, 255, 255))
+# Instâncias
+menu = Menu()
+grid = TerrinhaGrid()
+cursor = CursorPersonalizado()
 
-# Carregar o sprite do terreno
-terra_img = pygame.image.load("sprites/terra_seca.png").convert()
-terra_img = pygame.transform.scale(terra_img, (200, 200))
-terra_img.set_colorkey((255, 255, 255))
-
-def criar_terrinhas(screen, terra_img, linhas=3, colunas=3, pos_inicial_x=200, pos_inicial_y=200):
-    terrinhas = {}
-
-    for linha in range(linhas):
-        for coluna in range(colunas):
-            x = pos_inicial_x + (coluna * 80) + (linha * 80)
-            y = pos_inicial_y + (coluna * 35) - (linha * 35)
-            rect = terra_img.get_rect(center=(x, y))
-            terrinhas[(linha, coluna)] = {
-                "rect": rect,
-                "estado": "seco"
-            }
-            screen.blit(terra_img, rect)
-
-    return terrinhas
+# Mapear índice do botão para ferramenta
+ferramenta_ativa = "cursor"
+ferramentas = {
+    0: "cursor",
+    1: "pá",
+    2: "regador",
+    3: "fertilizante",
+    4: "sementes",
+    5: "colher"
+}
 
 running = True
-while running == True:
+while running:
+    mouse_pos = pygame.mouse.get_pos()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # Fundo
-    screen.fill((0, 0, 0))
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            clicado = menu.checar_clique(mouse_pos)
+            if clicado is not None:
+                ferramenta_ativa = ferramentas.get(clicado, ferramenta_ativa)
+            else:
+                grid.checar_clique(mouse_pos, ferramenta_ativa)
+                
+    screen.fill(COR_FUNDO)
 
-    # desenhos
-    criar_terrinhas(screen, terra_img)
+    # Lógica de hover
+    grid.checar_hover(cursor)
 
-    # Posicao do mouse
-    mouse_pos = pygame.mouse.get_pos()
-    # Desenhar cursor na posição do mouse
-    screen.blit(cursor_img, mouse_pos)
-    
-    # Atualiza a tela
+    # Desenhar jogo
+    grid.desenhar(screen)
+    menu.desenhar(screen)
+    cursor.desenhar(screen, mouse_pos)
+
     pygame.display.flip()
-    # Seta Framerate
-    clock.tick(30)
+    clock.tick(FPS)
 
 pygame.quit()
