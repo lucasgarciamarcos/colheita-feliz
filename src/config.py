@@ -2,7 +2,7 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
 FPS = 60
 
-COR_FUNDO = (0, 0, 0)
+FUNDO_PATH = "sprites/fundo.png"
 
 # Caminhos básicos
 TERRA_PATH = "sprites/terra_seca.png"

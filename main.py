@@ -10,6 +10,10 @@ pygame.display.set_caption("Coleta Feliz")
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(False)
 
+# Carregar imagem de fundo
+fundo = pygame.image.load(FUNDO_PATH).convert()
+fundo = pygame.transform.scale(fundo, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
 # Instâncias
 menu = Menu()
 grid = TerrinhaGrid()
@@ -34,7 +38,7 @@ while running:
     ferramenta_ativa = menu.get_ferramenta_atual()
     cursor.mudar_ferramenta(ferramenta_ativa)
                 
-    screen.fill(COR_FUNDO)
+    screen.blit(fundo, (0, 0))
 
     # Checar hover
     menu.checar_hover(cursor)
