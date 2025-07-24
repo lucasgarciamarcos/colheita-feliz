@@ -48,3 +48,10 @@ class TerrinhaGrid:
             if cursor.get_hitbox().colliderect(terrinha["hitbox"]):
                 self.hover_index = idx
                 break
+
+    def checar_clique(self, cursor):
+        self.hover_index = None
+        for idx, terrinha in self.terrinhas.items():
+            if cursor.get_hitbox().colliderect(terrinha["hitbox"]):
+                self.ferramenta_ativa = idx
+                break

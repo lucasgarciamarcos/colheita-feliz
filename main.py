@@ -3,7 +3,6 @@ from src.config import *
 from src.menu import Menu
 from src.cursor import CursorPersonalizado
 from src.terrinhas import TerrinhaGrid
-from src.cursor import CursorPersonalizado
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -17,11 +16,10 @@ grid = TerrinhaGrid()
 cursor = CursorPersonalizado()
 
 # Mapear índice do botão para ferramenta
-ferramenta_ativa = "cursor"
 ferramentas = {
     0: "cursor",
     1: "pá",
-    2: "regador",
+    2: "regador", 
     3: "fertilizante",
     4: "sementes",
     5: "colher"
@@ -36,15 +34,16 @@ while running:
             running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            clicado = menu.checar_clique(mouse_pos)
-            if clicado is not None:
-                ferramenta_ativa = ferramentas.get(clicado, ferramenta_ativa)
-            else:
+            clicado = menu.checar_clique(cursor)
+            if clicado is None:
+                # Se não clicou no menu, verifica clique no grid
+                ferramenta_ativa = ferramentas.get(menu.ferramenta_ativa, "cursor")
                 grid.checar_clique(mouse_pos, ferramenta_ativa)
                 
     screen.fill(COR_FUNDO)
 
-    # Lógica de hover
+    # Checar hover no menu e grid
+    menu.checar_hover(cursor)
     grid.checar_hover(cursor)
 
     # Desenhar jogo

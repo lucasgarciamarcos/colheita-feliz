@@ -8,4 +8,5 @@ COR_FUNDO = (0, 0, 0)
 CURSOR_PATH = "sprites/cursor.png"
 TERRA_PATH = "sprites/terra_seca.png"
 MENU_ICON_PATH = "sprites/menu.png"
+MENU_FOICE_ICON_PATH = "sprites/menu_foice.png"
 DEBUG = True
