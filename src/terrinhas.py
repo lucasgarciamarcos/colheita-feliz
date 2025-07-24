@@ -49,9 +49,22 @@ class TerrinhaGrid:
                 self.hover_index = idx
                 break
 
-    def checar_clique(self, cursor):
-        self.hover_index = None
+    def checar_clique(self, cursor, ferramenta_ativa):
+        """Verifica clique nas terrinhas usando o cursor e aplica a ferramenta"""
         for idx, terrinha in self.terrinhas.items():
             if cursor.get_hitbox().colliderect(terrinha["hitbox"]):
-                self.ferramenta_ativa = idx
-                break
+                # Aqui você pode implementar a lógica específica de cada ferramenta
+                print(f"Clicou na terrinha {idx} com ferramenta: {ferramenta_ativa}")
+                
+                # Exemplo de lógica por ferramenta:
+                if ferramenta_ativa == "agua":
+                    terrinha["estado"] = "molhado"
+                elif ferramenta_ativa == "sementes":
+                    terrinha["estado"] = "plantado"
+                elif ferramenta_ativa == "foice":
+                    terrinha["estado"] = "colhido"
+                elif ferramenta_ativa == "fertilizante":
+                    terrinha["estado"] = "fertilizado"
+                
+                return idx
+        return None

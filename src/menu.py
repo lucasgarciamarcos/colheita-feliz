@@ -1,24 +1,15 @@
 import pygame
-from src.config import MENU_ICON_PATH, MENU_FOICE_ICON_PATH, SCREEN_WIDTH, SCREEN_HEIGHT, DEBUG
+from src.config import FERRAMENTAS, SCREEN_WIDTH, SCREEN_HEIGHT, DEBUG
 
 class Menu:
     def __init__(self):
-        # Definir os caminhos das ferramentas
-        self.caminhos_ferramentas = [
-            MENU_FOICE_ICON_PATH,  # 1: foice
-            MENU_ICON_PATH,        # 2: regador
-            MENU_ICON_PATH,        # 3: fertilizante
-            MENU_ICON_PATH,        # 4: sementes
-            MENU_ICON_PATH,        # 4: loja
-        ]
-        
-        # Carregar ícones e criar estrutura similar ao TerrinhaGrid
+        # Carregar ícones e criar estrutura usando FERRAMENTAS
         self.ferramentas = {}
         y = SCREEN_HEIGHT - 80 // 2
-        x = (SCREEN_WIDTH - len(self.caminhos_ferramentas) * 80) // 2 + 20
+        x = (SCREEN_WIDTH - len(FERRAMENTAS) * 80) // 2 + 20
         
-        for i, caminho in enumerate(self.caminhos_ferramentas):
-            icone = pygame.image.load(caminho).convert_alpha()
+        for i, ferramenta_info in FERRAMENTAS.items():
+            icone = pygame.image.load(ferramenta_info["menu_icon"]).convert_alpha()
             icone = pygame.transform.scale(icone, (80, 80))
             
             # Rect visual do ícone
@@ -31,7 +22,8 @@ class Menu:
             self.ferramentas[i] = {
                 "icone": icone,
                 "rect": icone_rect,
-                "hitbox": hitbox
+                "hitbox": hitbox,
+                "nome": ferramenta_info["nome"]  # Adicionar nome para referência
             }
             
             x += 80
@@ -39,6 +31,10 @@ class Menu:
         # Estados das ferramentas
         self.ferramenta_ativa = 0
         self.hover_index = None
+
+    def get_ferramenta_atual(self):
+        """Retorna o nome da ferramenta ativa"""
+        return FERRAMENTAS.get(self.ferramenta_ativa, {}).get("nome", "foice")
 
     def checar_clique(self, cursor):
         """Verifica se algum botão foi clicado usando hitbox do cursor"""

@@ -15,16 +15,6 @@ menu = Menu()
 grid = TerrinhaGrid()
 cursor = CursorPersonalizado()
 
-# Mapear índice do botão para ferramenta
-ferramentas = {
-    0: "cursor",
-    1: "pá",
-    2: "regador", 
-    3: "fertilizante",
-    4: "sementes",
-    5: "colher"
-}
-
 running = True
 while running:
     mouse_pos = pygame.mouse.get_pos()
@@ -37,12 +27,16 @@ while running:
             clicado = menu.checar_clique(cursor)
             if clicado is None:
                 # Se não clicou no menu, verifica clique no grid
-                ferramenta_ativa = ferramentas.get(menu.ferramenta_ativa, "cursor")
-                grid.checar_clique(mouse_pos, ferramenta_ativa)
+                ferramenta_ativa = menu.get_ferramenta_atual()
+                grid.checar_clique(cursor, ferramenta_ativa)  # ← Mudança aqui: cursor ao invés de mouse_pos
+
+    # Atualizar cursor baseado na ferramenta ativa
+    ferramenta_ativa = menu.get_ferramenta_atual()
+    cursor.mudar_ferramenta(ferramenta_ativa)
                 
     screen.fill(COR_FUNDO)
 
-    # Checar hover no menu e grid
+    # Checar hover
     menu.checar_hover(cursor)
     grid.checar_hover(cursor)
 
