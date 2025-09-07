@@ -6,7 +6,7 @@ from src.terrinhas import TerrinhaGrid
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Coleta Feliz")
+pygame.display.set_caption("Colheita Feliz")
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(False)
 
